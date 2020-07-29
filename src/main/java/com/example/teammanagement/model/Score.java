@@ -5,6 +5,8 @@ import com.fasterxml.jackson.annotation.ObjectIdGenerators;
 import com.sun.istack.NotNull;
 
 import javax.persistence.*;
+import java.util.ArrayList;
+import java.util.List;
 
 @Entity
 @JsonIdentityInfo(
@@ -22,6 +24,10 @@ public class Score {
 
     @OneToOne(mappedBy = "score")
     private Team team;
+
+    @ManyToMany(targetEntity = Venue.class, mappedBy = "scores",
+            cascade = {CascadeType.PERSIST, CascadeType.DETACH, CascadeType.MERGE, CascadeType.REFRESH})
+    private List<Venue> venues = new ArrayList<>();
 
     public Score() {
 
@@ -49,5 +55,13 @@ public class Score {
 
     public void setPoint(int point) {
         this.point = point;
+    }
+
+    public List<Venue> getVenues() {
+        return venues;
+    }
+
+    public void setVenues(List<Venue> venues) {
+        this.venues = venues;
     }
 }
